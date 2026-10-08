@@ -56,7 +56,7 @@ class ListManager():
     def undo(self):
         pass
 
-    def get_items(self):
+    def get_items(self) -> list:
         tasks: list = self.linked_list.to_array()
 
         task_data = []
