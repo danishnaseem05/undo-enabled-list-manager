@@ -11,24 +11,38 @@ Output:
 
 from my_linked_list import MyLinkedList
 from my_stack import MyStack
+from task import Task
+from functools import partial
 
 class ListManager():
     def __init__(self, linked_list=None, stack=None):
-        if linked_list is None:
-            self.linked_list = MyLinkedList
-        else:
-            self.linked_list = linked_list
+        self.linked_list = linked_list or MyLinkedList()
+        self.stack = stack or MyStack()
 
-        if stack is None:
-            self.stack = MyStack
-        else:
-            self.stack = stack
+    def _insert_task(self, task, index):
+        return self.linked_list.insert_at(index, task)
 
-    def add(self, item):
-        pass
+    def _remove_task(self, index):
+        task = self.linked_list.get_at(index)
+        self.linked_list.delete_at(index)
+        return task
+
+    def add(self, item, index):
+        if index < 0 or index > self.linked_list.get_count():
+            return False
+
+        task = Task(item)
+        self._insert_task(task, index)
+        self.stack.push(partial(self._remove_task, index))
+        return True
 
     def remove(self, index):
-        pass
+        if index < 0 or index >= self.linked_list.get_count():
+            return False
+
+        task = self._remove_task(index)
+        self.stack.push(partial(self._insert_task, task, index))
+        return True
 
     def move(self, from_pos, to_pos):
         pass
@@ -37,7 +51,13 @@ class ListManager():
         pass
 
     def undo(self):
-        pass
+        if self.stack.is_empty_stack():
+            return False
+
+        undo_func = self.stack.get_top()
+        self.stack.pop()
+        undo_func()
+        return True
 
     def get_items(self):
         pass
