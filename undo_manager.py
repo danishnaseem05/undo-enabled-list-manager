@@ -10,7 +10,7 @@ Output:
 """
 
 
-def UndoManager():
+class UndoManager():
     def __init__(self):
         pass
     
