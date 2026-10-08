@@ -57,4 +57,10 @@ class ListManager():
         pass
 
     def get_items(self):
-        pass
+        tasks: list = self.linked_list.to_array()
+
+        task_data = []
+        for task in tasks:
+            task_data.append(task.get_data())
+
+        return task_data
