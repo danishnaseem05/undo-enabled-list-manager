@@ -9,8 +9,12 @@ Input:
 Output:
 """
 
+from functools import partial
+
 from my_linked_list import MyLinkedList
 from my_stack import MyStack
+from undo_manager import UndoManager
+from task import Task
 
 class ListManager():
     def __init__(self, linked_list=None, stack=None):
@@ -24,14 +28,27 @@ class ListManager():
         else:
             self.stack = stack
 
+        self.undo_manager = UndoManager()
+
     def add(self, item):
         pass
 
     def remove(self, index):
         pass
 
-    def move(self, from_pos, to_pos):
-        pass
+    def move(self, from_pos: int, to_pos: int) -> None:
+        curr_task: Task = self.linked_list.get_at(from_pos)
+        self.linked_list.delete_at(from_pos)
+        self.linked_list.insert_at(to_pos, curr_task)
+        self.stack.push(
+            partial(
+                self.undo_manager.undo_move,
+                list=self.linked_list,
+                from_pos=to_pos,
+                to_pos=from_pos,
+                item=curr_task    
+            )
+        )
 
     def edit(self):
         pass
