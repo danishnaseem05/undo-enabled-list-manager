@@ -9,16 +9,19 @@ Input:
 Output:
 """
 
+from functools import partial
+
 from my_linked_list import MyLinkedList
 from my_stack import MyStack
 from task import Task
-from functools import partial
 
-class ListManager():
+
+class ListManager:
     def __init__(self, linked_list=None, stack=None):
-        self.linked_list = linked_list or MyLinkedList()
-        self.stack = stack or MyStack()
+        self.linked_list = linked_list if linked_list is not None else MyLinkedList()
+        self.stack = stack if stack is not None else MyStack()
 
+    #private methods for pushing to undo stack
     def _insert_task(self, task, index):
         return self.linked_list.insert_at(index, task)
 
@@ -27,6 +30,7 @@ class ListManager():
         self.linked_list.delete_at(index)
         return task
 
+    #public methods
     def add(self, item, index):
         if index < 0 or index > self.linked_list.get_count():
             return False
