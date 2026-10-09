@@ -33,7 +33,13 @@ class ListManager():
     def add(self, item):
         pass
 
+    def _undo_add(self):
+        pass
+
     def remove(self, index):
+        pass
+
+    def _undo_remove(self):
         pass
 
     def move(self, from_pos: int, to_pos: int) -> None:
@@ -42,7 +48,7 @@ class ListManager():
         self.linked_list.insert_at(to_pos, curr_task)
         self.stack.push(
             partial(
-                self.undo_manager.undo_move,
+                self._undo_move,
                 list=self.linked_list,
                 from_pos=to_pos,
                 to_pos=from_pos,
@@ -50,9 +56,16 @@ class ListManager():
             )
         )
 
+    def _undo_move(self, from_pos: int, to_pos: int, item: Task):
+        self.linked_list.delete_at(from_pos)
+        self.linked_list.insert_at(to_pos, item)
+    
     def edit(self):
         pass
 
+    def _undo_edit(self):
+        pass
+    
     def undo(self):
         pass
 
