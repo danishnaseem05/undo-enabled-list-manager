@@ -13,7 +13,6 @@ from functools import partial
 
 from my_linked_list import MyLinkedList
 from my_stack import MyStack
-from undo_manager import UndoManager
 from task import Task
 
 class ListManager():
@@ -27,8 +26,6 @@ class ListManager():
             self.stack = MyStack
         else:
             self.stack = stack
-
-        self.undo_manager = UndoManager()
 
     def add(self, item):
         pass
