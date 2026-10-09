@@ -18,12 +18,12 @@ from task import Task
 class ListManager():
     def __init__(self, linked_list=None, stack=None):
         if linked_list is None:
-            self.linked_list = MyLinkedList
+            self.linked_list = MyLinkedList()
         else:
             self.linked_list = linked_list
 
         if stack is None:
-            self.stack = MyStack
+            self.stack = MyStack()
         else:
             self.stack = stack
 
@@ -39,30 +39,28 @@ class ListManager():
     def _undo_remove(self):
         pass
 
-    def move(self, from_pos: int, to_pos: int) -> None:
-        curr_task: Task = self.linked_list.get_at(from_pos)
-        self.linked_list.delete_at(from_pos)
-        self.linked_list.insert_at(to_pos, curr_task)
+    def _move_task(self, from_index: int, to_index: int) -> bool:
+        curr_task: Task = self.linked_list.get_at(from_index)
+        self.linked_list.delete_at(from_index)
+        self.linked_list.insert_at(to_index, curr_task)
+    
+    def move(self, from_index: int, to_index: int) -> bool:
+        self._move_task(from_index, to_index)
         self.stack.push(
             partial(
-                self._undo_move,
-                list=self.linked_list,
-                from_pos=to_pos,
-                to_pos=from_pos,
-                item=curr_task    
+                self._move_task,
+                from_index=to_index,
+                to_index=from_index,  
             )
         )
+        return True
 
-    def _undo_move(self, from_pos: int, to_pos: int, item: Task):
-        self.linked_list.delete_at(from_pos)
-        self.linked_list.insert_at(to_pos, item)
-    
     def edit(self):
         pass
 
     def _undo_edit(self):
         pass
-    
+
     def undo(self):
         pass
 
@@ -74,3 +72,9 @@ class ListManager():
             task_data.append(task.get_data())
 
         return task_data
+
+    def is_empty(self):
+        return self.linked_list.is_empty()
+
+    def get_count(self):
+        return self.linked_list.get_count()
