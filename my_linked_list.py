@@ -96,6 +96,20 @@ class MyLinkedList:
 
         return result if result else "EMPTY LIST"
 
+    def to_array(self):
+        """
+        Precondition: no inputs being passed in.
+
+        Postcondition: return list. If the MyLinkedList contains no nodes, empty python list is returned, otherwise it returns python list with each node's value
+        """
+        result = []
+        current = self._first
+        while current != None:
+            result.append(current.data)
+            current = current.next
+
+        return result
+
     def get_first(self):
         """
         Precondition: no inputs being passed in.

@@ -21,7 +21,7 @@ class ListManager:
         self.linked_list = linked_list if linked_list is not None else MyLinkedList()
         self.stack = stack if stack is not None else MyStack()
 
-    #private methods for pushing to undo stack
+    # Private methods mutate the list without recording undo operations.
     def _insert_task(self, task, index):
         return self.linked_list.insert_at(index, task)
 
@@ -30,7 +30,11 @@ class ListManager:
         self.linked_list.delete_at(index)
         return task
 
-    #public methods
+    def _move_task(self, from_pos, to_pos):
+        task = self._remove_task(from_pos)
+        self._insert_task(task, to_pos)
+
+    # Public methods mutate the list and record their inverse operations.
     def add(self, item, index):
         if index < 0 or index > self.linked_list.get_count():
             return False
@@ -49,8 +53,17 @@ class ListManager:
         return True
 
     def move(self, from_pos, to_pos):
-        pass
+        count = self.linked_list.get_count()
+        if not (0 <= from_pos < count and 0 <= to_pos < count):
+            return False
 
+        if from_pos == to_pos:
+            return True
+
+        self._move_task(from_pos, to_pos)
+        self.stack.push(partial(self._move_task, to_pos, from_pos))
+        return True
+    
     def edit(self):
         pass
 
@@ -63,5 +76,11 @@ class ListManager:
         undo_func()
         return True
 
-    def get_items(self):
-        pass
+    def get_items(self) -> list:
+        tasks: list = self.linked_list.to_array()
+
+        task_data = []
+        for task in tasks:
+            task_data.append(task.get_data())
+
+        return task_data
