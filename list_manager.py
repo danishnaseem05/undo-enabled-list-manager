@@ -34,6 +34,9 @@ class ListManager:
         task = self._remove_task(from_pos)
         self._insert_task(task, to_pos)
 
+    def _edit_task(self, task, data):
+        task.set_data(data)
+
     # Public methods mutate the list and record their inverse operations.
     def add(self, item, index):
         if index < 0 or index > self.linked_list.get_count():
@@ -64,8 +67,16 @@ class ListManager:
         self.stack.push(partial(self._move_task, to_pos, from_pos))
         return True
     
-    def edit(self):
-        pass
+    def edit(self, index, new_data):
+        if index < 0 or index >= self.linked_list.get_count():
+            return False
+
+        task = self.linked_list.get_at(index)
+        old_data = task.get_data()
+
+        self._edit_task(task, new_data)
+        self.stack.push(partial(self._edit_task, task, old_data))
+        return True
 
     def undo(self):
         if self.stack.is_empty_stack():
