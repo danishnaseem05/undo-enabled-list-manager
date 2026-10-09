@@ -11,6 +11,7 @@ Output:
 
 from list_manager import ListManager
 
+
 def format_header(header):
     print(f"\n################## {header} ##################\n")
 
