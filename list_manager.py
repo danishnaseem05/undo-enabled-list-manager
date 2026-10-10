@@ -95,3 +95,9 @@ class ListManager:
             task_data.append(task.get_data())
 
         return task_data
+
+    def is_empty(self):
+        return self.linked_list.is_empty()
+
+    def get_count(self):
+        return self.linked_list.get_count()
