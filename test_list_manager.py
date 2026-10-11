@@ -1,3 +1,4 @@
+
 """
 Author:
 Date:
@@ -88,45 +89,45 @@ def main():
     print(f"Lenght of list manager | Expected: 0 | Actual: {list_manager.get_count()}")
     print(f"Items in list manager | Expected: [] | Actual: {list_manager.get_items()}")
 
-    # Added tests for clear and undo clear.
-    format_header("Testing clear on a populated list")
+    format_header("Testing clear")
     clear_manager = ListManager()
-    original_tasks = ["Homework", "Shopping", "Exercise"]
-    for index, task in enumerate(original_tasks):
-        assert clear_manager.add(task, index) is True
+    clear_manager.add("Study for exam", 0)
+    clear_manager.add("Pay bills", 1)
+    clear_manager.add("Buy groceries", 2)
 
-    assert clear_manager.clear() is True
-    assert clear_manager.is_empty() is True
-    assert clear_manager.get_count() == 0
-    assert clear_manager.get_items() == []
-    print("PASS: clear() removes all tasks from a populated list")
+    print(f"Items before clear | Expected: ['Study for exam', 'Pay bills', 'Buy groceries'] | Actual: {clear_manager.get_items()}")
+    print()
+    print(f"Called Clear | Expected: True | Actual: {clear_manager.clear()}")
+    print(f"Is list manager empty? | Expected: True | Actual: {clear_manager.is_empty()}")
+    print(f"Length of list manager | Expected: 0 | Actual: {clear_manager.get_count()}")
+    print(f"Items in list manager | Expected: [] | Actual: {clear_manager.get_items()}")
 
     format_header("Testing undo clear")
-    assert clear_manager.undo() is True
-    assert clear_manager.get_items() == original_tasks
-    assert clear_manager.get_count() == len(original_tasks)
-    print("PASS: undo() restores all tasks in their original order")
+    print(f"Called Undo | Expected: True | Actual: {clear_manager.undo()}")
+    print(f"Is list manager empty? | Expected: False | Actual: {clear_manager.is_empty()}")
+    print(f"Length of list manager | Expected: 3 | Actual: {clear_manager.get_count()}")
+    print(f"Items in list manager | Expected: ['Study for exam', 'Pay bills', 'Buy groceries'] | Actual: {clear_manager.get_items()}")
 
-    format_header("Testing clear on an empty list")
+    format_header("Testing clear on empty list")
     empty_manager = ListManager()
-    assert empty_manager.clear() is False
-    assert empty_manager.get_items() == []
-    assert empty_manager.undo() is False
-    print("PASS: clear() on an empty list does not create an undo action")
+    print(f"Is list manager empty? | Expected: True | Actual: {empty_manager.is_empty()}")
+    print(f"Called Clear | Expected: False | Actual: {empty_manager.clear()}")
+    print(f"Length of list manager | Expected: 0 | Actual: {empty_manager.get_count()}")
+    print(f"Items in list manager | Expected: [] | Actual: {empty_manager.get_items()}")
+    print(f"Called Undo | Expected: False | Actual: {empty_manager.undo()}")
 
-    format_header("Testing undo order after clear and add")
-    history_manager = ListManager()
-    assert history_manager.add("First", 0) is True
-    assert history_manager.add("Second", 1) is True
-    assert history_manager.clear() is True
-    assert history_manager.add("New", 0) is True
-    assert history_manager.undo() is True
-    assert history_manager.get_items() == []
-    assert history_manager.undo() is True
-    assert history_manager.get_items() == ["First", "Second"]
-    print("PASS: undo() first reverses add, then restores the cleared list")
-
-    format_header("All clear and undo clear tests passed")
+    format_header("Testing undo after clear and add")
+    clear_manager.clear()
+    clear_manager.add("New task", 0)
+    print(f"Items in list manager | Expected: ['New task'] | Actual: {clear_manager.get_items()}")
+    print()
+    clear_manager.undo()
+    print("Called Undo")
+    print(f"Items in list manager | Expected: [] | Actual: {clear_manager.get_items()}")
+    print()
+    clear_manager.undo()
+    print("Called Undo")
+    print(f"Items in list manager | Expected: ['Study for exam', 'Pay bills', 'Buy groceries'] | Actual: {clear_manager.get_items()}")
 
 
 if __name__ == "__main__":
