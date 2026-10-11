@@ -101,3 +101,8 @@ class ListManager:
 
     def get_count(self):
         return self.linked_list.get_count()
+
+    def __str__(self):
+        curr = self.get_items()
+        return str(curr)
+
