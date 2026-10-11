@@ -3,10 +3,13 @@ Author:
 Date:
 
 Purpose:
+Manage a linked list of tasks and support undo operations, including clear/undo clear.
 
 Input:
+Tasks and commands for adding, removing, moving, editing, clearing, and undoing changes.
 
 Output:
+Updated task list or a Boolean indicating whether an operation succeeded.
 """
 
 from functools import partial
@@ -37,6 +40,12 @@ class ListManager:
     def _edit_task(self, task, data):
         task.set_data(data)
 
+    # NEW: Restore the exact tasks that were removed by clear(), in order.
+    # This is called by undo(), not by the user directly.
+    def _undo_clear(self, saved_tasks):
+        for index, task in enumerate(saved_tasks):
+            self._insert_task(task, index)
+
     # Public methods mutate the list and record their inverse operations.
     def add(self, item, index):
         if index < 0 or index > self.linked_list.get_count():
@@ -66,7 +75,7 @@ class ListManager:
         self._move_task(from_pos, to_pos)
         self.stack.push(partial(self._move_task, to_pos, from_pos))
         return True
-    
+
     def edit(self, index, new_data):
         if index < 0 or index >= self.linked_list.get_count():
             return False
@@ -76,6 +85,18 @@ class ListManager:
 
         self._edit_task(task, new_data)
         self.stack.push(partial(self._edit_task, task, old_data))
+        return True
+
+    # NEW: Clear every task, saving one undo operation for the entire clear.
+    def clear(self):
+        if self.is_empty():
+            return False
+
+        saved_tasks = self.linked_list.to_array()
+        while not self.is_empty():
+            self._remove_task(0)
+
+        self.stack.push(partial(self._undo_clear, saved_tasks))
         return True
 
     def undo(self):
