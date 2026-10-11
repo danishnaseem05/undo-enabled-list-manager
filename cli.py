@@ -17,7 +17,6 @@ class ListManagerCLI(Cmd):
 
     def print_state(self):
         """Display the current state of the linked list"""
-
         print("Current list:\n")
         self.do_list("")
 
@@ -29,10 +28,10 @@ class ListManagerCLI(Cmd):
         print("  edit <INDEX> <DESCRIPTION>      Replace a task's description.")
         print("  move <FROM_INDEX> <TO_INDEX>    Move a task to another index.")
         print("  list                        Display all tasks and indexes.")
-        print("  undo                        Undo the most recent operation.")
+        print("  clear                       Remove all tasks from the list.")
+        print("  undo                        Undo the most recent operation, including clear.")
         print("  help                        Show general or command-specific help.")
         print("  quit                        Exit the program.")
-
 
     def do_add(self, arguments):
         """Usage: add <INDEX> <DESCRIPTION>"""
@@ -110,10 +109,25 @@ class ListManagerCLI(Cmd):
         for index, task in enumerate(tasks):
             print(f"{index}: {task}")
 
+    # Clear all tasks while preserving undo history.
+    def do_clear(self, arguments):
+        """Usage: clear
+
+        Remove all tasks from the list.
+        The operation can be reversed using undo.
+        """
+
+        if self.manager.clear():
+            print("All tasks cleared.")
+            self.print_state()
+        else:
+            print("The task list is already empty.")
+
     def do_undo(self, arguments):
         """Usage: undo
 
-        Reverse the most recent add, remove, edit, or move operation.
+        Reverse the most recent add, remove, edit, move,
+        or clear operation.
         """
 
         if self.manager.undo():
