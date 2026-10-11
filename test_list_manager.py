@@ -1,3 +1,4 @@
+
 """
 Author:
 Date:
@@ -87,6 +88,46 @@ def main():
     print(f"Is list manager empty? | Expected: True | Actual: {list_manager.is_empty()}")
     print(f"Lenght of list manager | Expected: 0 | Actual: {list_manager.get_count()}")
     print(f"Items in list manager | Expected: [] | Actual: {list_manager.get_items()}")
+
+    format_header("Testing clear")
+    clear_manager = ListManager()
+    clear_manager.add("Study for exam", 0)
+    clear_manager.add("Pay bills", 1)
+    clear_manager.add("Buy groceries", 2)
+
+    print(f"Items before clear | Expected: ['Study for exam', 'Pay bills', 'Buy groceries'] | Actual: {clear_manager.get_items()}")
+    print()
+    print(f"Called Clear | Expected: True | Actual: {clear_manager.clear()}")
+    print(f"Is list manager empty? | Expected: True | Actual: {clear_manager.is_empty()}")
+    print(f"Length of list manager | Expected: 0 | Actual: {clear_manager.get_count()}")
+    print(f"Items in list manager | Expected: [] | Actual: {clear_manager.get_items()}")
+
+    format_header("Testing undo clear")
+    print(f"Called Undo | Expected: True | Actual: {clear_manager.undo()}")
+    print(f"Is list manager empty? | Expected: False | Actual: {clear_manager.is_empty()}")
+    print(f"Length of list manager | Expected: 3 | Actual: {clear_manager.get_count()}")
+    print(f"Items in list manager | Expected: ['Study for exam', 'Pay bills', 'Buy groceries'] | Actual: {clear_manager.get_items()}")
+
+    format_header("Testing clear on empty list")
+    empty_manager = ListManager()
+    print(f"Is list manager empty? | Expected: True | Actual: {empty_manager.is_empty()}")
+    print(f"Called Clear | Expected: False | Actual: {empty_manager.clear()}")
+    print(f"Length of list manager | Expected: 0 | Actual: {empty_manager.get_count()}")
+    print(f"Items in list manager | Expected: [] | Actual: {empty_manager.get_items()}")
+    print(f"Called Undo | Expected: False | Actual: {empty_manager.undo()}")
+
+    format_header("Testing undo after clear and add")
+    clear_manager.clear()
+    clear_manager.add("New task", 0)
+    print(f"Items in list manager | Expected: ['New task'] | Actual: {clear_manager.get_items()}")
+    print()
+    clear_manager.undo()
+    print("Called Undo")
+    print(f"Items in list manager | Expected: [] | Actual: {clear_manager.get_items()}")
+    print()
+    clear_manager.undo()
+    print("Called Undo")
+    print(f"Items in list manager | Expected: ['Study for exam', 'Pay bills', 'Buy groceries'] | Actual: {clear_manager.get_items()}")
 
 
 if __name__ == "__main__":
