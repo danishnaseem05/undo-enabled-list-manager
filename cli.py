@@ -1,9 +1,20 @@
+"""
+Authors: Daniel Adayev, Kevin Cang, Danish Naseem, Abdullah Rizwan
+Date: October 11, 2026
+
+Purpose: Provide a command-line interface for the undo-enabled list manager.
+Input: Commands and arguments entered by the user.
+Output: Operation results and the current task-list state.
+"""
+
 from cmd import Cmd
 
 from list_manager import ListManager
 
 
 class ListManagerCLI(Cmd):
+    """Accept terminal commands and apply them to a ListManager."""
+
     intro = "Undo-Enabled List Manager. Type 'help' for commands."
     prompt = "\nEnter a Command: "
 
@@ -20,7 +31,7 @@ class ListManagerCLI(Cmd):
         print("Current list:\n")
         self.do_list("")
 
-    def do_help(self, command):
+    def do_help(self):
         """Show command syntax"""
         print("Available commands:\n")
         print("  add <INDEX> <DESCRIPTION>       Insert a task at INDEX.")
@@ -145,6 +156,8 @@ class ListManagerCLI(Cmd):
 
 
 def main():
+    """Start the interactive command loop."""
+
     ListManagerCLI().cmdloop()
 
 

@@ -1,23 +1,25 @@
 
 """
-Author:
-Date:
+Authors: Daniel Adayev, Kevin Cang, Danish Naseem, Abdullah Rizwan
+Date: October 11, 2026
 
-Purpose:
-
-Input:
-
-Output:
+Purpose: Exercise the ListManager operations and display expected results.
+Input: None; the test data is defined in this file.
+Output: Expected and actual results for each tested operation.
 """
 
 from list_manager import ListManager
 
 
 def format_header(header):
+    """Print a heading for one group of test operations."""
+
     print(f"\n################## {header} ##################\n")
 
 
 def main():
+    """Run the ListManager demonstration tests."""
+
     format_header("Initialize empty list manager")
     list_manager = ListManager()
     print(f"Is list manager empty? | Expected: True | Actual: {list_manager.is_empty()}")
