@@ -1,15 +1,10 @@
 """
-Author:
-Date:
+Authors: Daniel Adayev, Kevin Cang, Danish Naseem, Abdullah Rizwan
+Date: October 11, 2026
 
-Purpose:
-Manage a linked list of tasks and support undo operations, including clear/undo clear.
-
-Input:
-Tasks and commands for adding, removing, moving, editing, clearing, and undoing changes.
-
-Output:
-Updated task list or a Boolean indicating whether an operation succeeded.
+Purpose: Manage a linked list of tasks and support undo operations.
+Input: Tasks, indexes, and replacement task descriptions.
+Output: Operation statuses and the current task-list data.
 """
 
 from functools import partial
@@ -20,6 +15,8 @@ from task import Task
 
 
 class ListManager:
+    """Manage tasks in a linked list with stack-based undo support."""
+
     def __init__(self, linked_list=None, stack=None):
         self.linked_list = linked_list if linked_list is not None else MyLinkedList()
         self.stack = stack if stack is not None else MyStack()
@@ -40,14 +37,14 @@ class ListManager:
     def _edit_task(self, task, data):
         task.set_data(data)
 
-    # NEW: Restore the exact tasks that were removed by clear(), in order.
-    # This is called by undo(), not by the user directly.
     def _undo_clear(self, saved_tasks):
         for index, task in enumerate(saved_tasks):
             self._insert_task(task, index)
 
     # Public methods mutate the list and record their inverse operations.
     def add(self, item, index):
+        """Insert a new task at index and record its inverse operation."""
+
         if index < 0 or index > self.linked_list.get_count():
             return False
 
@@ -57,6 +54,8 @@ class ListManager:
         return True
 
     def remove(self, index):
+        """Remove the task at index and record its inverse operation."""
+
         if index < 0 or index >= self.linked_list.get_count():
             return False
 
@@ -65,6 +64,8 @@ class ListManager:
         return True
 
     def move(self, from_pos, to_pos):
+        """Move a task between indexes and record the inverse move."""
+
         count = self.linked_list.get_count()
         if not (0 <= from_pos < count and 0 <= to_pos < count):
             return False
@@ -77,6 +78,8 @@ class ListManager:
         return True
 
     def edit(self, index, new_data):
+        """Replace a task's data and record its previous value."""
+
         if index < 0 or index >= self.linked_list.get_count():
             return False
 
@@ -87,8 +90,9 @@ class ListManager:
         self.stack.push(partial(self._edit_task, task, old_data))
         return True
 
-    # NEW: Clear every task, saving one undo operation for the entire clear.
     def clear(self):
+        """Remove all tasks and record one operation that restores them."""
+
         if self.is_empty():
             return False
 
@@ -100,6 +104,8 @@ class ListManager:
         return True
 
     def undo(self):
+        """Reverse the most recent successful list operation."""
+
         if self.stack.is_empty_stack():
             return False
 
@@ -109,6 +115,8 @@ class ListManager:
         return True
 
     def get_items(self) -> list:
+        """Return the task descriptions in their current order."""
+
         tasks: list = self.linked_list.to_array()
 
         task_data = []
@@ -118,12 +126,17 @@ class ListManager:
         return task_data
 
     def is_empty(self):
+        """Return whether the managed list contains no tasks."""
+
         return self.linked_list.is_empty()
 
     def get_count(self):
+        """Return the number of tasks in the managed list."""
+
         return self.linked_list.get_count()
 
     def __str__(self):
+        """Return a string representation of the task descriptions."""
+
         curr = self.get_items()
         return str(curr)
-

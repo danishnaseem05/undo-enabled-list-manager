@@ -1,6 +1,6 @@
 """
-Author:
-Date:
+Authors: Daniel Adayev, Kevin Cang, Danish Naseem, Abdullah Rizwan
+Date: October 11, 2026
 
 Purpose: This program implements a linked-list based stack data structure. It follows the LIFO (Last-In-First-Out) behavior. The last item to be added to the stack, is the first item to be removed from the stack. This item is called as the TOP. Inside the low-level linked-list, we save each item to the front (TOP) of the list as that is O(1) and simiarly during popping we remove the element from the front (TOP) of list as that is also O(1).
 

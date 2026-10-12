@@ -1,6 +1,6 @@
 """
-Author:
-Date:
+Authors: Daniel Adayev, Kevin Cang, Danish Naseem, Abdullah Rizwan
+Date: October 11, 2026
 
 Purpose: This program implements a singly linked list using individual node objects linked together. Each node object contain a data element which contains the actual value to be stored, and a next element, which is a pointer referencing to the next node in the list. The methods implemented enable the capability to be able to insert and delete items to and from the the list.
 
